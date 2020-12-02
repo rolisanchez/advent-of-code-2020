@@ -15,21 +15,19 @@ do {
 
             let lineComponents = line.components(separatedBy: ":")
             let policyComponents = lineComponents[0].components(separatedBy: " ")
-            let policyCountComponents = policyComponents[0].components(separatedBy: "-") // ex: 8-11
-            let minCount = Int(policyCountComponents[0])!
-            let maxCount = Int(policyCountComponents[1])!
-            let policyLetter = policyComponents[1]
+            let policyPositionComponents = policyComponents[0].components(separatedBy: "-") // ex: 8-11
+            let pos1 = Int(policyPositionComponents[0])!
+            let pos2 = Int(policyPositionComponents[1])!
+            let policyLetter = Character(policyComponents[1])
             let password = lineComponents[1].trimmingCharacters(in: .whitespacesAndNewlines)
 
+            let letter1 = password[password.index(password.startIndex, offsetBy: (pos1-1))]
+            let letter2 = password[password.index(password.startIndex, offsetBy: (pos2-1))]
             
-            let range = NSRange(location: 0, length: password.utf16.count)
-            let regex = try! NSRegularExpression(pattern: "\(policyLetter){1,1}")
-
-            let results = regex.matches(in: password, range: range)
-
-            if results.count >= minCount && results.count <= maxCount {
+            if letter1 != letter2 && (letter1 == policyLetter || letter2 == policyLetter) {
                 validCounts += 1
             }
+
         }
 
         print("Finished reading lines")
