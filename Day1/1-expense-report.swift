@@ -24,22 +24,22 @@ do {
 
         let target = 2020
             
-            var val1: Int!
-            var val2: Int!
+        var val1: Int!
+        var val2: Int!
 
-            for val in hashTable.keys {
-                let y = target - val
-                if hashTable.keys.contains(y) {
-                    val1 = val
-                    val2 = y
-                    break
-                }
+        for val in hashTable.keys {
+            let y = target - val
+            if hashTable.keys.contains(y) {
+                val1 = val
+                val2 = y
+                break
             }
+        }
 
-            print("val1: ", val1)
-            print("val2: ", val2)
-            
-            print("product: ", (val1*val2))
+        print("val1: ", val1)
+        print("val2: ", val2)
+        
+        print("product: ", (val1*val2))
     }
     else {
         fatalError("Could not open file")

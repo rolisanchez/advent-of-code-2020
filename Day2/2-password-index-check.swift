@@ -1,9 +1,6 @@
 import Foundation
 
-// Use Hash Table Data Structure to find sum
-
 let filepath = "./input.txt"
-
 
 do {
     if let contents = try? String(contentsOfFile: filepath) {
