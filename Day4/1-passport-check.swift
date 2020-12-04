@@ -2,6 +2,22 @@ import Foundation
 
 // Use Hash Table Data Structure to find sum
 
+func arePassportKeysValid(_ passportDict: [String:String]) -> Bool {
+    // byr (Birth Year)
+    // iyr (Issue Year)
+    // eyr (Expiration Year)
+    // hgt (Height)
+    // hcl (Hair Color)
+    // ecl (Eye Color)
+    // pid (Passport ID)
+    // cid (Country ID)
+    if passportDict["byr"] == nil || passportDict["iyr"] == nil || passportDict["eyr"] == nil 
+        || passportDict["hgt"] == nil || passportDict["hcl"] == nil || passportDict["ecl"] == nil 
+        || passportDict["pid"] == nil {
+        return false
+    }
+    return true
+}
 let filepath = "./input.txt"
 
 do {
@@ -13,24 +29,10 @@ do {
 
         for line in lines {
             if line.isEmpty { 
-                // byr (Birth Year)
-                // iyr (Issue Year)
-                // eyr (Expiration Year)
-                // hgt (Height)
-                // hcl (Hair Color)
-                // ecl (Eye Color)
-                // pid (Passport ID)
-                // cid (Country ID)
-
-                // End of past passport info, verify all info
-                if passportDict["byr"] == nil || passportDict["iyr"] == nil || passportDict["eyr"] == nil 
-                || passportDict["hgt"] == nil || passportDict["hcl"] == nil || passportDict["ecl"] == nil 
-                || passportDict["pid"] == nil {
-                    // Invalid passport
-                } else {
-                    validPassports += 1
+                if arePassportKeysValid(passportDict) { 
+                    validPassports += 1 
                 }
-                // Start a new passporr
+                // Start a new passport
                 passportDict = [String:String]()
                 
             } else {
