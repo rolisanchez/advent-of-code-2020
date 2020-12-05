@@ -116,5 +116,7 @@ do {
 
         print("validPassports: ", validPassports)
 
+    } else {
+        fatalError("Could not open file")
     }
 }

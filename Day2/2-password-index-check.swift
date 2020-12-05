@@ -29,8 +29,7 @@ do {
 
         print("Finished reading lines")
         print("validCounts: ", validCounts)
-    }
-    else {
+    } else {
         fatalError("Could not open file")
     }
 }

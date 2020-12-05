@@ -1,7 +1,5 @@
 import Foundation
 
-// Use Hash Table Data Structure to find sum
-
 func arePassportKeysValid(_ passportDict: [String:String]) -> Bool {
     // byr (Birth Year)
     // iyr (Issue Year)
@@ -49,5 +47,7 @@ do {
 
         print("validPassports: ", validPassports)
 
+    } else {
+        fatalError("Could not open file")
     }
 }

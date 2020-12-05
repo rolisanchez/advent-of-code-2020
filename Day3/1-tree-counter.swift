@@ -31,5 +31,7 @@ do {
         }
 
         print("treeCount: ", treeCount)
+    } else {
+        fatalError("Could not open file")
     }
 }
