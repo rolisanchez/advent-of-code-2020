@@ -16,10 +16,9 @@ do {
         for line in lines {
 
             let lineComponents = line.components(separatedBy: "contain ")
-            // print(lineComponents)
+
             let containerComponents = lineComponents[0].components(separatedBy: " ")
             let parent = containerComponents[0] + " " + containerComponents[1]
-            // print(parent)
 
             let childComponents = lineComponents[1].components(separatedBy: ", ")
 
@@ -36,7 +35,6 @@ do {
                 
                 rulesDict[childColor]?.insert(parent)
             }
-            
             
         }
 
