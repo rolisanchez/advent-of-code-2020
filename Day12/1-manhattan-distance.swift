@@ -45,11 +45,6 @@ do {
         for line in lines {
             let command = String(line[line.startIndex..<line.index(line.startIndex, offsetBy: 1)])
             let value = Int(line[line.index(line.startIndex, offsetBy: 1)..<line.endIndex])!
-
-            
-            
-            
-            
             
             // Action F means to move forward by the given value in the direction the ship is currently facing.
             if command == "F" {
