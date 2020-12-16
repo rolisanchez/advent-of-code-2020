@@ -11,8 +11,8 @@ do {
         let rulesInfo = groups[0].components(separatedBy: "\n")
         var myTicketInfo = groups[1].components(separatedBy: "\n")
         myTicketInfo = Array(myTicketInfo[1..<myTicketInfo.count])
-        var nearbyTickersInfo = groups[2].components(separatedBy: "\n")
-        nearbyTickersInfo = Array(nearbyTickersInfo[1..<nearbyTickersInfo.count])
+        let nearbyTickersInfoStr = groups[2].components(separatedBy: "\n")
+        let nearbyTickersInfo = Array(nearbyTickersInfoStr[1..<nearbyTickersInfoStr.count]).map { $0.components(separatedBy: ",").map{ Int($0)! }}
         // print(rulesInfo)
         // print(myTicketInfo)
         // print(nearbyTickersInfo)
@@ -32,9 +32,9 @@ do {
         }
 
         var invalidVals = [Int]()
-        for nearbyTicket in nearbyTickersInfo {
-            let ticketVals = nearbyTicket.components(separatedBy: ",").map{ Int($0)! }
-
+        
+        for ticketVals in nearbyTickersInfo {
+            
             for ticketVal in ticketVals {
                 var validTicket = false
                 for closedRange in ruleRangesArr {
