@@ -26,6 +26,7 @@ struct Coord: Hashable {
     let x: Int
     let y: Int
     let z: Int
+    let w: Int
 }
 
 class Dimension {
@@ -34,12 +35,13 @@ class Dimension {
     private(set) var rangeX: ClosedRange<Int> = 0...0
     private(set) var rangeY: ClosedRange<Int> = 0...0
     private(set) var rangeZ: ClosedRange<Int> = 0...0
+    private(set) var rangeW: ClosedRange<Int> = 0...0
 
     init(lines: [String]){
         for (y, line) in lines.enumerated() {
             for (x, ch) in line.enumerated() {
-                // Initially we only have Z:0, the initial flat region
-                self.set(coord: Coord(x: x, y: y, z: 0), to: ch == "#")
+                // Initially we only have Z:0 and W:0, the initial flat region
+                self.set(coord: Coord(x: x, y: y, z: 0, w: 0), to: ch == "#")
             }
         }
     }
@@ -56,6 +58,9 @@ class Dimension {
         if !rangeZ.contains(coord.z) {
             rangeZ = rangeZ.expandingTo(value: coord.z)
         }
+        if !rangeW.contains(coord.w) {
+            rangeW = rangeW.expandingTo(value: coord.w)
+        }
     }
 
     func isActive(coord: Coord) -> Bool {
@@ -67,11 +72,13 @@ class Dimension {
         for x in -1...1 {
             for y in -1...1 {
                 for z in -1...1 {
-                    offsets.append(Coord(x: x, y: y, z: z))
+                    for w in -1...1 {
+                        offsets.append(Coord(x: x, y: y, z: z, w: w))
+                    }
                 }
             }
         }
-        return offsets.filter { $0 != Coord(x: 0, y: 0, z: 0) }
+        return offsets.filter { $0 != Coord(x: 0, y: 0, z: 0, w: 0) }
     }
 
     func processToNextCycle(toOffsets: [Coord]? = nil) {
@@ -85,31 +92,34 @@ class Dimension {
         for x in rangeX.expandedBy(value: 1) {
             for y in rangeY.expandedBy(value: 1) {
                 for z in rangeZ.expandedBy(value: 1) {
-                    var count = 0
-                    let cellCoord = Coord(x: x, y: y, z: z)
-                    for neighborCoordOffset in offsets {
-                        let neighborCoord = Coord(
-                                            x: x + neighborCoordOffset.x,
-                                            y: y + neighborCoordOffset.y,
-                                            z: z + neighborCoordOffset.z
-                                        )
-                        if isActive(coord: neighborCoord) {
-                            count += 1
+                    for w in rangeW.expandedBy(value: 1) {
+                        var count = 0
+                        let cellCoord = Coord(x: x, y: y, z: z, w: w)
+                        for neighborCoordOffset in offsets {
+                            let neighborCoord = Coord(
+                                                x: x + neighborCoordOffset.x,
+                                                y: y + neighborCoordOffset.y,
+                                                z: z + neighborCoordOffset.z,
+                                                w: w + neighborCoordOffset.w
+                                            )
+                            if isActive(coord: neighborCoord) {
+                                count += 1
+                            }
                         }
-                    }
 
 
-                    let cellActive = isActive(coord: cellCoord)
-                    
-                    if cellActive {
-                        if count == 2 || count == 3 {
-                            // Stay active
-                        } else {
-                            changes[cellCoord] = false
+                        let cellActive = isActive(coord: cellCoord)
+                        
+                        if cellActive {
+                            if count == 2 || count == 3 {
+                                // Stay active
+                            } else {
+                                changes[cellCoord] = false
+                            }
                         }
-                    }
-                    if !cellActive && count == 3 {
-                        changes[cellCoord] = true
+                        if !cellActive && count == 3 {
+                            changes[cellCoord] = true
+                        }
                     }
                 }
             }
@@ -127,12 +137,16 @@ class Dimension {
     }
 
     func printGrid(withDetails: Bool = false) {
-        for z in rangeZ {
-            print("z: \(z)")
-            for y in rangeY {
-                for x in rangeX {
-                    let terminator = withDetails ? "(\(x),\(y),\(z))" : ""
-                    print(isActive(coord: Coord(x: x, y: y, z: z)) ? "#" : ".", terminator: terminator)
+        for w in rangeW {
+            print("w: \(w)")
+            for z in rangeZ {
+                print("z: \(z)")
+                for y in rangeY {
+                    for x in rangeX {
+                        let terminator = withDetails ? "(\(x),\(y),\(z),\(w))" : ""
+                        print(isActive(coord: Coord(x: x, y: y, z: z, w: w)) ? "#" : ".", terminator: terminator)
+                    }
+                    print()
                 }
                 print()
             }
