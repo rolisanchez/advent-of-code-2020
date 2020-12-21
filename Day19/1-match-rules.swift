@@ -1,7 +1,8 @@
 import Foundation
 
 // let filepath = "./input.txt"
-let filepath = "./testinput.txt"
+let filepath = "./input2.txt"
+// let filepath = "./testinput.txt"
 
 do {
     let start = DispatchTime.now().uptimeNanoseconds
@@ -113,10 +114,10 @@ func runBigRuleset(groups: [String]) {
 
     let rulesDict = Dictionary(uniqueKeysWithValues: rules)
 
-    let expressions = messages.map { line in
-        ruleMatches([line], ruleNumber: 0, rulesDict: rulesDict)
+    let expressions = messages.map { message in
+        ruleMatches([message], ruleNumber: 0, rulesDict: rulesDict)
     }
-    print(expressions)
+    print(expressions.filter { $0?.contains("") == true })
     print(expressions.filter { $0?.contains("") == true }.count)
 }
 
