@@ -25,18 +25,20 @@ do {
                 p2Deck.append(p1Play)
             }
         }
-
-        let finalArr = (p1Deck+p2Deck)
-        var winningScore = 0
-        for (index, num) in finalArr.enumerated(){
-            winningScore += (finalArr.count - index)*num
-        }
         
-        print("Result: ", winningScore)
+        print("Result: ", getWiningScore(finalDeck: (p1Deck+p2Deck)) )
 
         let end = DispatchTime.now().uptimeNanoseconds
         print("Time elapsed: \((end-start)/1_000)μs")
     } else { 
         fatalError("Could not open file")
     }
+}
+
+func getWiningScore(finalDeck: [Int]) -> Int {
+    var winningScore = 0
+    for (index, num) in finalDeck.enumerated(){
+        winningScore += (finalDeck.count - index)*num
+    }
+    return winningScore
 }
