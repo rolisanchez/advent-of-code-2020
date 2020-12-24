@@ -3,16 +3,16 @@ import Foundation
 do {
     let start = DispatchTime.now().uptimeNanoseconds
     // let testInput = "389125467"
-    // crabCupsPart1LL(input: testInput)
+    // crabCupsPart2LL(input: testInput)
     
     let input = "712643589"
-    crabCupsPart1LL(input: input)
+    crabCupsPart2LL(input: input)
     let end = DispatchTime.now().uptimeNanoseconds
     print("Time elapsed: \((end-start)/1_000)μs")
 
 }
 
-func crabCupsPart1LL(input: String) {
+func crabCupsPart2LL(input: String) {
     func calculateDest(nextThree: [Int]) -> Cup {
         var dest = currentCup.val - 1
         while nextThree.contains(dest) || dest == 0 {
@@ -22,7 +22,12 @@ func crabCupsPart1LL(input: String) {
     }
 
     // Each Cup has its value and next Cup
-    let cups = input.map { Cup(val: Int(String($0))!) }
+    var cups = input.map { Cup(val: Int(String($0))!) }
+    let maxCup = cups.max()!.val
+
+    
+    cups += Array((maxCup + 1)...(1_000_000)).map { Cup(val: Int(String($0))!) }
+
     let countCups = cups.count
 
     var hash = [Int: Cup]()
@@ -35,8 +40,8 @@ func crabCupsPart1LL(input: String) {
     
     var currentCup = cups[0]
 
-    // Play the game for 100 rounds
-    for _ in 0..<100 {
+    // Play the game for 1_000_000 rounds
+    for _ in 0..<10_000_000 {
         let nextThree = [currentCup.next.val, currentCup.next.next.val, currentCup.next.next.next.val]
         let destCup = calculateDest(nextThree: nextThree)
 
@@ -47,22 +52,26 @@ func crabCupsPart1LL(input: String) {
         currentCup = currentCup.next
     }
 
-    var i = 1
-    var ans = ""
-    while hash[i]!.next.val != 1 {
-        i = hash[i]!.next.val
-        ans += String(i)
-    }
-
-    print("Ans Part 1 with LinkedList: ", ans)
+    let nextTo1 = hash[1]!.next.val
+    let nextNextTo1 = hash[1]!.next.next.val
+    
+    print("Ans Part 2 with LinkedList: ", (nextTo1*nextNextTo1))
 }
 
-class Cup {
+class Cup: Equatable, Comparable {
     let val: Int
     var next: Cup! = nil
 
     init(val: Int, next: Cup? = nil){
         self.val = val
         self.next = next
+    }
+
+    static func <(lhs: Cup, rhs: Cup) -> Bool {
+        return lhs.val < rhs.val
+    }
+
+    static func ==(lhs: Cup, rhs: Cup) -> Bool {
+        return lhs.val == rhs.val
     }
 }
